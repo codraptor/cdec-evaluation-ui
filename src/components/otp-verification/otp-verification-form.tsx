@@ -27,10 +27,18 @@ export const OTPVerificationForm: React.FC<Props> = ({onSubmit}) => {
                         <Field name="password" label="Password" placeholder="Password" component={MyField}/>
                         </div>
                         <br/>
-                        <Button style={{ color: "#fff", paddingLeft: 40, paddingRight: 40,  paddingTop: 10, paddingBottom: 10,
-          background : "#173D7A" , fontSize: 15, boxShadow: "0px 0px 6px #9E9E9E" }}  type="submit" >Submit</Button>
-                        <Button style={{ color: "#000", paddingLeft: 40, marginLeft : 10, paddingRight: 40,  paddingTop: 10, paddingBottom: 10,
-          background : "#fff" , fontSize: 15, boxShadow: "0px 0px 6px #9E9E9E" }}  type="button" onClick={(() => {
+                        <Button style={{ color: "#000", fontWeight: 600, paddingLeft: 40, 
+                        fontFamily: 'Cabin',
+                        paddingRight: 40,  paddingTop: 10, paddingBottom: 10,
+                        background : "#40e0d0" , fontSize: 18 , boxShadow: "0px 0px 6px #40e0d0"
+                        }}  type="submit" >Submit</Button>
+                        <Button style= {{ color: "#000", fontWeight: 600, paddingLeft: 40, 
+                        fontFamily: 'Cabin', marginLeft : 10,
+                        paddingRight: 40,  paddingTop: 10, paddingBottom: 10,
+                        background : "#fff" , fontSize: 18 , boxShadow: "0px 0px 6px #fff"
+                        }}
+                        
+                        type="button" onClick={(() => {
               history.push("/");
           })}>Go Back</Button>
                     </Form>

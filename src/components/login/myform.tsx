@@ -22,8 +22,11 @@ export const MyForm: React.FC<Props> = ({onSubmit}) => {
                         <Field name="phone" label="Phone" placeholder="Phone" component={MyField}/>
                         </div>
                         <br/>
-                        <Button style={{ color: "#fff", paddingLeft: 40, paddingRight: 40,  paddingTop: 10, paddingBottom: 10,
-          background : "#173D7A" , fontSize: 15, boxShadow: "0px 0px 6px #9E9E9E"  }} type="submit" >Submit</Button>
+                        <Button style={{ color: "#000", fontWeight: 600, paddingLeft: 40, 
+                        fontFamily: 'Cabin',
+                        paddingRight: 40,  paddingTop: 10, paddingBottom: 10,
+                        background : "#40e0d0" , fontSize: 18 , boxShadow: "0px 0px 6px #40e0d0"
+                        }} type="submit" >Submit</Button>
                     </Form>
                     
                 )

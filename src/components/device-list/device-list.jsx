@@ -14,9 +14,9 @@ import Switch from 'react-ios-switch';
 import { css } from "@emotion/react";
 import PulseLoader from "react-spinners/PulseLoader";
 
+import './device-list.css';
+
 import TimeField from 'react-simple-timefield';
-
-
 
 // import * as SockJS from 'sockjs-client';
 
@@ -27,7 +27,11 @@ const customStyles = {
       top                   : '50%',
       bottom                : 'auto',
       transform             : 'translate(0%, -50%)',
-      textAlign             : 'center'
+      textAlign             : 'center',
+      paddingBottom         : '40px',
+      backgroundColor       : 'black',
+      background            : '0, 0, 0, 0.8',
+      boxShadow             : '0px 0px 12px #000'
     }
   };
 
@@ -45,11 +49,11 @@ const Devices = () => {
   position: fixed;
   left: 0px;
   top: 0px;
-  padding-top:300px;
+  padding-top:350px;
   width: 100%;
   height: 100%;
   z-index: 9999;
-    background:rgba(255, 255, 255, 0.6);
+    background:rgba(0, 0, 0, 0.8);
 `;
 
     // client.onopen = () => {
@@ -75,7 +79,7 @@ const Devices = () => {
 
   function afterOpenModal() {
     // references are now sync'd and can be accessed.
-    subtitle.style.color = '#f00';
+    subtitle.style.color = '#fff';
   }
 
   function closeModal() {
@@ -226,23 +230,28 @@ const Devices = () => {
 
           <h2 style={{ fontFamily:"montserrat", textAlign:"center", marginTop:50, color: "000" }} ref={_subtitle => (subtitle = _subtitle)}>Switch</h2>
 
-          <Button style={{ variant : "contained",  color: "#000", fontSize: 20,
-        
-           paddingLeft: 40, paddingRight: 40,  paddingTop: 10, paddingBottom: 10, background : "#40e0d0" }} 
+          <Button style={{ color: "#000", fontWeight: 600, paddingLeft: 40, 
+                        fontFamily: 'Cabin',
+                        paddingRight: 40,  paddingTop: 10, paddingBottom: 10,
+                        background : "#40e0d0" , fontSize: 18 , boxShadow: "0px 0px 6px #40e0d0"
+                        }}
            onClick={() => {switchDevice(currentDevice)}}>{currentDevice && currentDevice.state.value==='OFF' ? 'SWITCH ON' : 'SWITCH OFF'}</Button> 
       
-          <h2 style={{ fontFamily:"montserrat", textAlign:"center", marginTop:50, color: "000" }} ref={_subtitle => (subtitle = _subtitle)}>Set Time</h2>
+          <h2 id="setTime" style={{ color: '#40e0d0', fontFamily:"montserrat", textAlign:"center", 
+          marginTop:50 }} ref={_subtitle => (subtitle = _subtitle)}>Set Time</h2>
 
           <div>
           
-          <span style={{ fontFamily:"montserrat", textAlign:"center", fontWeight: 600, color: "000" }}>
-            ON TIME:</span> 
-            <TimeField style={{ fontSize: 20, marginLeft: 20, width: 100, textAlign: 'center', padding: 10 }} value={currentDevice && 
+          <span style={{ fontFamily:"montserrat", textAlign:"center", fontWeight: 600, color: '#fff' }}>
+            ON TIME: &nbsp;</span> 
+            <TimeField style={{ fontSize: 20, color: 'white', backgroundColor:'black', 
+            marginLeft: 20, width: 100, textAlign: 'center', padding: 10, border: '1px solid white' }} value={currentDevice && 
             currentDevice.buttonTime && currentDevice.buttonTime.onTime ? currentDevice.buttonTime.onTime : '00:00:00'
             } showSeconds={true} onChange={(event, value) => setOnTime(value)} />
           <br/><br/>
-          <span style={{ fontFamily:"montserrat", textAlign:"center", fontWeight: 600, color: "000" }}>
-            OFF TIME:</span> <TimeField style={{ fontSize: 20, marginLeft: 20, width: 100, 
+          <span style={{ fontFamily:"montserrat", textAlign:"center", fontWeight: 600, color: '#fff' }}>
+            OFF TIME:</span> <TimeField style={{ fontSize: 20, color: 'white', backgroundColor:'black', 
+            border: '1px solid white', marginLeft: 20, width: 100, 
               textAlign: 'center', padding: 10  }} value={currentDevice && currentDevice.buttonTime && currentDevice.buttonTime.offTime
                ? currentDevice.buttonTime.offTime : '00:00:00'} showSeconds={true} onChange={(event, value) => setOffTime(value)} />
           
@@ -250,15 +259,19 @@ const Devices = () => {
 
           <br/><br/>
 
-          <Button style={{ variant : "contained",  color: "#000", fontSize: 20,
-        
-           paddingLeft: 40, paddingRight: 40,  paddingTop: 10, paddingBottom: 10, background : "#40e0d0" }} 
+          <Button style={{ color: "#000", fontWeight: 600, paddingLeft: 40, 
+                        fontFamily: 'Cabin',
+                        paddingRight: 40,  paddingTop: 10, paddingBottom: 10,
+                        background : "#40e0d0" , fontSize: 18 , boxShadow: "0px 0px 6px #40e0d0"
+                        }}
            onClick={() => {setTime(currentDevice)}}>Set</Button> 
 
           <br/>
-          <Button style={{ textAlign:"center", variant : "contained",  color: "#fff", marginTop:20, marginBottom:30,
-           paddingLeft: 40, paddingRight: 40,  paddingTop: 10, paddingBottom: 10,
-          background : "#f33" , fontSize: 20 }} onClick={closeModal}>close</Button>
+          <Button style={{ color: "#fff", fontWeight: 600, paddingLeft: 40, 
+                        fontFamily: 'Cabin', marginTop: 20, 
+                        paddingRight: 40,  paddingTop: 10, paddingBottom: 10,
+                        background : "#1e1e1e" , fontSize: 18 , boxShadow: "0px 0px 6px #fff"
+                        }} onClick={closeModal}>close</Button>
           
           </Modal>
  
@@ -292,21 +305,25 @@ const Devices = () => {
             }}
             ref={ (client) => {  }} />
 
-<Button style={{ variant : "contained",  color: "#fff", marginTop:40, paddingLeft: 40, 
-paddingRight: 40,  paddingTop: 10, paddingBottom: 10,
-          background : "#444" , fontSize: 20 }} onClick={logout}>Log Out</Button>
+<Button style={{ variant : "contained", color: "#000", marginTop:40, fontWeight: 600, paddingLeft: 40, 
+          fontFamily: 'Cabin',
+          paddingRight: 40,  paddingTop: 10, paddingBottom: 10,
+          background : "#40e0d0" , fontSize: 18 , boxShadow: "0px 0px 6px #40e0d0"
+          }} onClick={logout}>Log Out</Button>
 
             { devices.map((device) => (
               
               
                   <Card onClick={() => {openModal(device)}} key={device.id} style={{ 
+                    fontFamily: 'Cabin',
                     marginLeft: 20, marginRight: 20, marginTop: 30, borderRadius: '25px',
+                    textShadow: device.state.value === "OFF" ? "0px 0px 2px #9E9E9E" : "0px 0px 2px #000",
                     paddingTop: 20, paddingBottom: 20, background : (
-                    device.state.value === "OFF" ? "#1a1a1a" : "#7393B3"
-                  ), boxShadow: "0px 0px 6px #9E9E9E" }}>
+                    device.state.value === "OFF" ? "#1e1a1a" : "#40e0d0"
+                  ), boxShadow: device.state.value === "OFF" ? "0px 0px 6px #9E9E9E" : "0px 0px 12px #40e0d0" }}>
 
                     <h2 style={{ fontFamily:"montserrat", marginLeft: 0, marginRight:0, color : (
-                    device.state.value === "OFF" ? "#fff" : "#fff"
+                    device.state.value === "OFF" ? "#fff" : "#000"
                   ) }}>{device.name}</h2>
 
                   {device && device.state && device.state.type==='TIMER' && device.buttonTime && <div>
@@ -332,7 +349,7 @@ paddingRight: 40,  paddingTop: 10, paddingBottom: 10,
                     
             ))}
 
-<PulseLoader color={'#000'} loading={loading} css={override} />
+<PulseLoader color={'#40e0d0'} loading={loading} css={override} />
       </div>
       );
   };

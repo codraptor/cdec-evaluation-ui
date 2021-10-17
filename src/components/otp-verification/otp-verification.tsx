@@ -29,11 +29,11 @@ const OTPVerification = () => {
   position: fixed;
   left: 0px;
   top: 0px;
-  padding-top:300px;
+  padding-top:350px;
   width: 100%;
   height: 100%;
   z-index: 9999;
-    background:rgba(255, 255, 255, 0.6);
+    background:rgba(0, 0, 0, 0.8);
 `;
 
   useEffect(() => {
@@ -67,8 +67,13 @@ const OTPVerification = () => {
     mobile = localStorage.getItem("phone") || "";
 
     let formCenterCSS : CSSProperties = {
-      margin: "0",
+      position: "fixed",
       top: "50%",
+      marginTop: -100,
+      marginLeft: -200,
+      left: "50%",
+      height: 200,
+      width: 400,
       textAlign: 'center'
     };
 
@@ -78,13 +83,17 @@ const OTPVerification = () => {
     <div style={formCenterCSS}>
             <ReactNotifications />
                      
-                      <header id="header-otp">
-  <div id="header-bg-otp"></div>
-                      <img id="image-otp" src={otpPic} />
-                      </header>
+      <div className="up_dark_triangle"></div>
+      <div className="up_dark_triangle_2"></div>
+      <div className="up_dark_triangle_3"></div>
+
+      <div className="up_dark_triangle_4"></div>
+      <div className="up_dark_triangle_5"></div>
+      <div className="up_dark_triangle_6"></div>
+
                       <div style={{ marginLeft:20, marginRight: 20 }}>
-        <h2 id="heading">One Time Password</h2>
-        <p id="otp">Please enter the received OTP</p>
+        <h2 style= {{  color: "#40e0d0", fontFamily: 'Cabin', fontSize: 30}} id="heading">One Time Password</h2>
+        <p style= {{  color: "white"}} id="otp">Please enter the received OTP</p>
       <OTPVerificationForm onSubmit={({password}) => {
 
         setLoading(true);
@@ -111,7 +120,7 @@ const OTPVerification = () => {
       }} />
       </div>
 
-      <PulseLoader color={'#fff'} loading={loading} css={override} />
+      <PulseLoader color={'#40e0d0'} loading={loading} css={override} />
 
       </div>
       );

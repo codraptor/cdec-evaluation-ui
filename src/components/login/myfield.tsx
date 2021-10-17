@@ -10,7 +10,9 @@ interface Props extends FieldProps {
 export const MyField: React.FC<Props> = ({placeholder, label, field }) => {
 
     return (<TextField 
-        inputProps={{style: {fontSize: 25, textAlign: "center", fontFamily: "'Cabin', sans-serif"}}}
+        inputProps={{style: {fontSize: 25, textAlign: "center", fontFamily: "'Cabin', sans-serif", 
+        border: "1px solid #40e0d0",
+        color: "white"}}}
         placeholder={placeholder}
         {... field} />);
 
