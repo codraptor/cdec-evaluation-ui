@@ -12,7 +12,7 @@ const App = () => {
   return (
     <HashRouter>
   <div style={{ textAlign : "center" }}>
-    <Header />
+    {/* <Header /> */}
     <UserContextProvider>
 
     <Switch>

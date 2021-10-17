@@ -1,0 +1,44 @@
+#heading {
+    margin-top: 20px;
+    font-family: 'Merriweather', serif;
+    color: rgb(80, 138, 204);
+    margin-bottom: 0;
+}
+
+body {
+    margin: 0;
+}
+
+#resources {
+    margin-top: 5px;
+    font-family: 'Cabin', sans-serif;
+    font-size: larger;
+    color: rgb(0, 0, 0);
+}
+
+#image {
+    margin-top: 40px;
+    width: 250px;
+    position: relative;
+}
+
+
+header {
+    position: relative;
+    height: 350px;
+    overflow: hidden;
+  }
+  
+  .header__bg {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: linear-gradient(#173D7A, #000);
+    transform: skewY(-6deg);
+    transform-origin: top left;
+  }
+  

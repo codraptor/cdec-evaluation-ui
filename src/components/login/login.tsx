@@ -13,12 +13,29 @@ import { store } from 'react-notifications-component';
 import 'react-notifications-component/dist/theme.css';
 
 import { useEffect } from "react";
-import { Card } from '@material-ui/core';
 
+import { useState } from "react";
+import { css } from "@emotion/react";
+import PulseLoader from "react-spinners/PulseLoader";
+
+import './login.css'; 
+import loginPic from './login.png';
 
 const Login = () => {
 
   const history = useHistory();
+  let [loading, setLoading] = useState(false);
+
+  const override = css`
+  position: fixed;
+  left: 0px;
+  top: 0px;
+  padding-top:300px;
+  width: 100%;
+  height: 100%;
+  z-index: 9999;
+    background:rgba(255, 255, 255, 0.6);
+`;
 
   useEffect(() => {
 
@@ -57,18 +74,27 @@ const Login = () => {
     return (
     <div style={formCenterCSS}>
             <ReactNotifications />
-            <Card style={{ 
-                    marginLeft: 20, marginRight: 20, marginTop: 40,
-                    paddingTop: 80, paddingBottom: 80 }}>
-      <div style={{ marginLeft:20, marginRight: 20 }}>
+
+            <header>
+  <div className="header__bg"></div>
+      <img id="image" src={loginPic} />
+
+      </header>
+
+      <div style={{ marginLeft:20, marginRight: 20}}>
+        <h2 id="heading">Sign in</h2>
+        <p id="resources">Sign in to access all your resources</p>
+        
       <MyForm onSubmit={({phone}) => {
 
         localStorage.setItem("phone", phone);
 
         updateMobile(phone);
 
+        setLoading(true);
+
         axios.post(serviceUrl + "/generateOtp",{
-          id:phone,
+          id:"+91"+phone,
           verificationType: 'PHONE',
           action: 'LOGIN'
         }).then((value)=> {
@@ -82,10 +108,13 @@ const Login = () => {
             history.push('/otp-verify');
           }
           console.log(value);
+          setLoading(false);
         });
       }} />
       </div>
-      </Card>
+
+      <PulseLoader color={'#fff'} loading={loading} css={override} />
+
       </div>
       );
   };

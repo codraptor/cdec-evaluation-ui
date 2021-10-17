@@ -10,6 +10,11 @@ import { serviceUrl }  from "../../constants";
 import { Card } from '@material-ui/core';
 import { Button } from '@material-ui/core';
 
+import Switch from 'react-ios-switch';
+import { css } from "@emotion/react";
+import PulseLoader from "react-spinners/PulseLoader";
+
+import TimeField from 'react-simple-timefield';
 
 
 
@@ -32,6 +37,20 @@ const Devices = () => {
 
   const history = useHistory();
 
+  let [loading, setLoading] = useState(false);
+  let [onTime, setOnTime] = useState('');
+  let [offTime, setOffTime] = useState('');
+
+  const override = css`
+  position: fixed;
+  left: 0px;
+  top: 0px;
+  padding-top:300px;
+  width: 100%;
+  height: 100%;
+  z-index: 9999;
+    background:rgba(255, 255, 255, 0.6);
+`;
 
     // client.onopen = () => {
     //     console.log('WebSocket Client Connected');
@@ -41,13 +60,16 @@ const Devices = () => {
     //     console.log(message);
     //   };
 
-  const [modalIsOpen,setIsOpen] = React.useState(false);
   const [currentDevice, setDevice] = React.useState( {friendlyId: "", name:"", state: "", controlStatus: "" });
 
   var subtitle;
 
+  const [modalIsOpen,setIsOpen] = React.useState(false);
+
   function openModal(device) {
     setDevice(device);
+    setOnTime(device.buttonTime === null ? '00:00:00' : device.buttonTime.onTime);
+    setOffTime(device.buttonTime === null ? '00:00:00' : device.buttonTime.offTime);
     setIsOpen(true);
   }
 
@@ -59,10 +81,62 @@ const Devices = () => {
   function closeModal() {
     setDevice(null);
     setIsOpen(false);
+    setOnTime('');
+    setOffTime('');
   }
-    
+
+  function setTime(device) {
+
+    let username = localStorage.getItem("username") || "";
+
+      let axiosConfig = {
+        headers: {
+            "Authorization": "Bearer " + (localStorage.getItem("jwt") || "")
+        }
+      };
+
+      setLoading(true);
+      setTimeout(() => setLoading(false), 5000);
+
+        axios.post(serviceUrl + "/setButtonTime",
+        {"username":username,
+      "onTime":onTime,
+      "offTime":offTime,
+    "buttonId": device.id}, axiosConfig)
+        .then((value) => {
+            console.log(value);
+            //setLoading(false);
+            //window.location.reload();
+        })
+  }
+
+  function switchDevice(device) {
+
+    let username = localStorage.getItem("username") || "";
+
+      let axiosConfig = {
+        headers: {
+            "Authorization": "Bearer " + (localStorage.getItem("jwt") || "")
+        }
+      };
+
+      setLoading(true);
+      setTimeout(() => setLoading(false), 5000);
+
+        axios.post(serviceUrl + "/toggleButton",
+        {"username":username,
+      "value": device.state.value && device.state.value === "ON"? "OFF" : "ON",
+    "buttonId": device.id}, axiosConfig)
+        .then((value) => {
+            console.log(value);
+            //setLoading(false);
+            //window.location.reload();
+        })
+  }
+
+   
     const [devices, setDevices] = useState([
-        {friendlyId: "", name:"", state: "", controlStatus: "" }
+        {id: "", name:"", state: { "value" : ""}}
     ]);
 
     const [_, updateState] = useState("");
@@ -80,32 +154,6 @@ const Devices = () => {
       history.push("/");
     }
 
-    function updateControlStatus(){
-
-      let username = localStorage.getItem("username") || "";
-
-      let axiosConfig = {
-        headers: {
-            "Authorization": "Bearer " + (localStorage.getItem("jwt") || "")
-        }
-      };
-
-      console.log("status to be switched: "+ currentDevice.controlStatus && currentDevice.controlStatus === "ON"? "OFF" : "ON");
-
-        axios.post(serviceUrl + "/switchControl",
-        {"username":username,
-      "status": currentDevice.controlStatus && currentDevice.controlStatus === "ON"? "OFF" : "ON",
-    "deviceId":currentDevice.friendlyId}, axiosConfig)
-        .then((value) => {
-            console.log(value);
-            //window.location.reload();
-
-            // let copy = JSON.parse(JSON.stringify(currentDevice));
-            // copy.controlStatus = copy.controlStatus && copy.controlStatus === "ON"? "OFF" : "ON";
-            // setDevice(copy);
-             closeModal();
-        })
-    }
 
     useEffect(() => {
 
@@ -127,29 +175,37 @@ const Devices = () => {
                "Authorization": "Bearer " + jwt
             }
           };
+
+          setLoading(true);
     
           axios.get(serviceUrl + "/validateToken",axiosConfig).then((value)=> {
+
             if(value.data === "SUCCESS"){
                   
             } else {
+              setLoading(false);
               localStorage.removeItem("jwt");
               history.push('/');
             }
+            
             console.log(value);
-          });
+          }).catch(
+            (error) => {
+              // setLoading(false);
+              // localStorage.removeItem("jwt");
+              // history.push('/');
+            }
+          );
     
         } else {
           history.push('/');
         }
 
-        axios.post(serviceUrl + "/getDevices",
+        axios.post(serviceUrl + "/getButtonsByAccess",
         {"username":username}, axiosConfig)
         .then((value) => {
-            if(value.data.status === "FAILURE"){
-                console.error(JSON.stringify(value));
-            } else {
-                setDevices(value.data.devices);
-            }
+                setDevices(value.data);
+                setLoading(false);
         })
     }, []);
 
@@ -160,7 +216,7 @@ const Devices = () => {
     return (
     <div>
 
-        <Modal
+<Modal
           isOpen={modalIsOpen}
           onAfterOpen={afterOpenModal}
           onRequestClose={closeModal}
@@ -168,12 +224,36 @@ const Devices = () => {
           contentLabel="Example Modal"
         >
 
-      
-          <h2 style={{ fontFamily:"montserrat", textAlign:"center", marginTop:50 }} ref={_subtitle => (subtitle = _subtitle)}>Do you want to <br/> switch the device <br/>{ currentDevice && currentDevice.controlStatus === "ON"? "OFF": "ON" }?</h2>
+          <h2 style={{ fontFamily:"montserrat", textAlign:"center", marginTop:50, color: "000" }} ref={_subtitle => (subtitle = _subtitle)}>Switch</h2>
+
           <Button style={{ variant : "contained",  color: "#000", fontSize: 20,
         
            paddingLeft: 40, paddingRight: 40,  paddingTop: 10, paddingBottom: 10, background : "#40e0d0" }} 
-           onClick={updateControlStatus}>Yes</Button> 
+           onClick={() => {switchDevice(currentDevice)}}>{currentDevice && currentDevice.state.value==='OFF' ? 'SWITCH ON' : 'SWITCH OFF'}</Button> 
+      
+          <h2 style={{ fontFamily:"montserrat", textAlign:"center", marginTop:50, color: "000" }} ref={_subtitle => (subtitle = _subtitle)}>Set Time</h2>
+
+          <div>
+          
+          <span style={{ fontFamily:"montserrat", textAlign:"center", fontWeight: 600, color: "000" }}>
+            ON TIME:</span> 
+            <TimeField style={{ fontSize: 20, marginLeft: 20, width: 100, textAlign: 'center', padding: 10 }} value={currentDevice && 
+            currentDevice.buttonTime && currentDevice.buttonTime.onTime ? currentDevice.buttonTime.onTime : '00:00:00'
+            } showSeconds={true} onChange={(event, value) => setOnTime(value)} />
+          <br/><br/>
+          <span style={{ fontFamily:"montserrat", textAlign:"center", fontWeight: 600, color: "000" }}>
+            OFF TIME:</span> <TimeField style={{ fontSize: 20, marginLeft: 20, width: 100, 
+              textAlign: 'center', padding: 10  }} value={currentDevice && currentDevice.buttonTime && currentDevice.buttonTime.offTime
+               ? currentDevice.buttonTime.offTime : '00:00:00'} showSeconds={true} onChange={(event, value) => setOffTime(value)} />
+          
+          </div> 
+
+          <br/><br/>
+
+          <Button style={{ variant : "contained",  color: "#000", fontSize: 20,
+        
+           paddingLeft: 40, paddingRight: 40,  paddingTop: 10, paddingBottom: 10, background : "#40e0d0" }} 
+           onClick={() => {setTime(currentDevice)}}>Set</Button> 
 
           <br/>
           <Button style={{ textAlign:"center", variant : "contained",  color: "#fff", marginTop:20, marginBottom:30,
@@ -181,7 +261,7 @@ const Devices = () => {
           background : "#f33" , fontSize: 20 }} onClick={closeModal}>close</Button>
           
           </Modal>
-
+ 
         <SockJsClient url={serviceUrl+'/secured/ws-message'} topics={['/topic/message']}
         debug = {true}
         headers = {{
@@ -195,56 +275,64 @@ const Devices = () => {
     }} 
             onMessage={(msg) => { console.log(msg); 
             
-              history.push('/#/devices');
-              //window.location.reload();
-                devices.forEach(device => {
-                    if(device.friendlyId === msg.friendlyId){
-                        // if(msg.state){
-                        //     device.state = msg.state;
-                        // }
-                        // if(msg.controlStatus){
-                        //     device.controlStatus = msg.controlStatus;
-                        // }
-                        updateScreen();
-                    }
-                });
+               //history.push('/#/devices/#' + msg.id);
+               window.location.reload();
+                // devices.forEach(device => {
+                //   console.log(device.id);
+                //     if(device.id === msg.id){
+                //         if(msg.state && msg.state.value){
+                //             device.state.value = msg.state.value;
+                //         }
+                //         //updateScreen();
+                //     }
+                // });
 
-                updateScreen();
+                //updateScreen();
             
             }}
             ref={ (client) => {  }} />
 
-<Button style={{ variant : "contained",  color: "#fff", marginTop:40, paddingLeft: 40, paddingRight: 40,  paddingTop: 10, paddingBottom: 10,
+<Button style={{ variant : "contained",  color: "#fff", marginTop:40, paddingLeft: 40, 
+paddingRight: 40,  paddingTop: 10, paddingBottom: 10,
           background : "#444" , fontSize: 20 }} onClick={logout}>Log Out</Button>
 
             { devices.map((device) => (
               
               
-                  <Card onClick={() => {openModal(device)}} key={device.friendlyId} style={{ 
-                    marginLeft: 20, marginRight: 20, marginTop: 40,
+                  <Card onClick={() => {openModal(device)}} key={device.id} style={{ 
+                    marginLeft: 20, marginRight: 20, marginTop: 30, borderRadius: '25px',
                     paddingTop: 20, paddingBottom: 20, background : (
-                    device.controlStatus === "OFF" ? "#ddd" : device.state === "NOT_SAFE" ? "#f33" : "#40e0d0"
-                  )  }}>
-                    <h1 style={{ fontFamily:"montserrat", color : (
-                    device.controlStatus === "OFF" ? "#000" : device.state === "NOT_SAFE" ? "#fff" : "#000"
-                  ) }}>{device.name}</h1>
-                    <hr style={{  border : "1px solid" + (
-                    device.controlStatus === "OFF" ? "#000" : device.state === "NOT_SAFE" ? "#fff" : "#000"
-                  ) }}/>
-                    <h2 style={{ fontFamily:"montserrat", color : (
-                    device.controlStatus === "OFF" ? "#000" : device.state === "NOT_SAFE" ? "#fff" : "#000"
-                  ) }}>{device.location}</h2>
-                    <h2 style={{ fontFamily:"montserrat", color : (
-                    device.controlStatus === "OFF" ? "#000" : device.state === "NOT_SAFE" ? "#fff" : "#000"
-                  ) }}>{
-                    device.controlStatus === "OFF" ? "" :
-                    device.state === "NOT_SAFE" ? "NOT SAFE" : "SAFE"}</h2>
-                    <h2 style={{ fontFamily:"montserrat", color : (
-                    device.controlStatus === "OFF" ? "#000" : device.state === "NOT_SAFE" ? "#fff" : "#000"
-                  ) }}>{device.controlStatus}</h2>
+                    device.state.value === "OFF" ? "#1a1a1a" : "#7393B3"
+                  ), boxShadow: "0px 0px 6px #9E9E9E" }}>
+
+                    <h2 style={{ fontFamily:"montserrat", marginLeft: 0, marginRight:0, color : (
+                    device.state.value === "OFF" ? "#fff" : "#fff"
+                  ) }}>{device.name}</h2>
+
+                  {device && device.state && device.state.type==='TIMER' && device.buttonTime && <div>
+
+                  <h3 style={{ fontFamily:"montserrat", marginLeft: 0, marginRight:0, color : (
+                    device.state.value === "OFF" ? "#fff" : "#fff"
+                  ) }}>ON TIME: {device && device.buttonTime && device.buttonTime.onTime}</h3>
+
+                  <h3 style={{ fontFamily:"montserrat", marginLeft: 0, marginRight:0, color : (
+                    device.state.value === "OFF" ? "#fff" : "#fff"
+                  ) }}>OFF TIME: {device && device.buttonTime && device.buttonTime.offTime}</h3>
+
+                  </div>
+                  }
+                  
+
+                  {/* <Switch style={{marginTop:20, marginBottom:20, marginLeft:0}}
+  checked={device.state.value === "ON"}
+  onColor="rgb(175,238,238)"
+  readOnly={true}
+/> */}
                     </Card>
                     
             ))}
+
+<PulseLoader color={'#000'} loading={loading} css={override} />
       </div>
       );
   };

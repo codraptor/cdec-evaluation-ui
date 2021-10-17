@@ -13,10 +13,28 @@ import 'react-notifications-component/dist/theme.css';
 import { useMobile } from '../common/user-context';
 import { Card } from '@material-ui/core';
 
+import './otp.css'; 
+import otpPic from './otp.png';
+
+import { useState } from "react";
+import { css } from "@emotion/react";
+import PulseLoader from "react-spinners/PulseLoader";
 
 const OTPVerification = () => {
 
   const history = useHistory();
+  let [loading, setLoading] = useState(false);
+
+  const override = css`
+  position: fixed;
+  left: 0px;
+  top: 0px;
+  padding-top:300px;
+  width: 100%;
+  height: 100%;
+  z-index: 9999;
+    background:rgba(255, 255, 255, 0.6);
+`;
 
   useEffect(() => {
 
@@ -59,13 +77,20 @@ const OTPVerification = () => {
     return (
     <div style={formCenterCSS}>
             <ReactNotifications />
-            <Card style={{ 
-                    marginLeft: 20, marginRight: 20, marginTop: 40,
-                    paddingTop: 80, paddingBottom: 80 }}>
+                     
+                      <header id="header-otp">
+  <div id="header-bg-otp"></div>
+                      <img id="image-otp" src={otpPic} />
+                      </header>
                       <div style={{ marginLeft:20, marginRight: 20 }}>
+        <h2 id="heading">One Time Password</h2>
+        <p id="otp">Please enter the received OTP</p>
       <OTPVerificationForm onSubmit={({password}) => {
+
+        setLoading(true);
+
         axios.post(serviceUrl + "/login",{
-          id:mobile,
+          id:"+91"+mobile,
           verificationType: 'PHONE',
           password: password
         }).then((value)=> {
@@ -81,10 +106,13 @@ const OTPVerification = () => {
             history.push('/devices');
           }
           console.log(value);
+          setLoading(false);
         })
       }} />
       </div>
-      </Card>
+
+      <PulseLoader color={'#fff'} loading={loading} css={override} />
+
       </div>
       );
   };
