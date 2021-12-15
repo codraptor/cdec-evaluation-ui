@@ -1,9 +1,11 @@
 import React from 'react';
 import { MyForm } from "./myform";
 import axios from "axios";
-import ReactNotifications from 'react-notifications-component';
+import ReactNotification from 'react-notifications-component';
 import { UserContext } from '../common/user-context';
 import { useHistory } from 'react-router-dom';
+import { toast } from 'react-toastify';
+
 
 import { serviceUrl }  from "../../constants";
 
@@ -78,8 +80,6 @@ const Login = () => {
 
     return (
     <div >
-            <ReactNotifications />
-
 
             {/* <header>
   <div className="header__bg"></div>
@@ -116,10 +116,23 @@ const Login = () => {
           action: 'LOGIN'
         }).then((value)=> {
           if(value.data.status === "FAILURE"){
-            store.addNotification({
-              content: MyNotify,
-              type: "warning",
-              container: "top-center"
+            // store.addNotification({
+            //   content: MyNotify,
+            //   animationIn: ["animate__animated", "animate__fadeIn"],
+            //   animationOut: ["animate__animated", "animate__fadeOut"],
+            //   type: "default",
+            //   container: "top-center",
+            //   dismiss: {
+            //     duration: 3000,
+            //     onScreen: false
+            //   }
+            // });
+            toast.error("Login Failed", {
+              position: toast.POSITION.TOP_CENTER,
+              closeButton: false,
+              hideProgressBar : true,
+              icon: false,
+              autoClose: 3000
             });
           }  else {
             history.push('/otp-verify');
@@ -139,12 +152,12 @@ const Login = () => {
 
   const MyNotify = () => {
     return (
-      <div><p style={MyStyles}>Sign up Failed</p> </div>
+      <div style={{textAlign:'center'}}><p style={MyStyles}>Login failed</p> </div>
     );
   }
   
   const MyStyles: CSSProperties = {
-    textAlign: 'center'
+    textAlign: 'center',
   }
 
   export default Login;

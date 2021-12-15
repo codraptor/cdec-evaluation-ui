@@ -10,6 +10,8 @@ import { CSSProperties } from "@material-ui/styles";
 import { store } from 'react-notifications-component';
 import 'react-notifications-component/dist/theme.css';
 
+import { toast } from 'react-toastify';
+
 import { useMobile } from '../common/user-context';
 import { Card } from '@material-ui/core';
 
@@ -104,10 +106,17 @@ const OTPVerification = () => {
           password: password
         }).then((value)=> {
           if(value.data.status === "FAILURE"){
-            store.addNotification({
-              content: MyNotify,
-              type: "warning",
-              container: "top-center"
+            // store.addNotification({
+            //   content: MyNotify,
+            //   type: "warning",
+            //   container: "top-center"
+            // });
+            toast.error("OTP verification failed", {
+              position: toast.POSITION.TOP_CENTER,
+              closeButton: false,
+              hideProgressBar : true,
+              icon: false,
+              autoClose: 3000
             });
           } else {
             localStorage.setItem("username", value.data.username);

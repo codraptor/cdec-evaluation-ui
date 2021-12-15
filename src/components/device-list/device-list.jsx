@@ -149,6 +149,10 @@ const Devices = () => {
         updateState();
     }
 
+    let reload = () => {
+      window.location.reload();
+    }
+
     let logout = () => {
 
       localStorage.removeItem("username");
@@ -218,7 +222,7 @@ const Devices = () => {
   };
 
     return (
-    <div>
+    <div style={{overflow:'hidden'}}>
 
 <Modal
           isOpen={modalIsOpen}
@@ -311,13 +315,22 @@ const Devices = () => {
           background : "#40e0d0" , fontSize: 18 , boxShadow: "0px 0px 6px #40e0d0"
           }} onClick={logout}>Log Out</Button>
 
+<Button style={{ variant : "contained", color: "#000", marginLeft:10, marginTop:40, fontWeight: 600, paddingLeft: 40, 
+          fontFamily: 'Cabin',
+          paddingRight: 40,  paddingTop: 10, paddingBottom: 10,
+          background : "#40e0d0" , fontSize: 18 , boxShadow: "0px 0px 6px #40e0d0"
+          }} onClick={reload}>Refresh</Button>
+
+          <br/><br/>
+
+          <div id="scrollableView">
+
             { devices.map((device) => (
               
               
                   <Card onClick={() => {openModal(device)}} key={device.id} style={{ 
                     fontFamily: 'Cabin',
                     marginLeft: 20, marginRight: 20, marginTop: 30, borderRadius: '25px',
-                    textShadow: device.state.value === "OFF" ? "0px 0px 2px #9E9E9E" : "0px 0px 2px #000",
                     paddingTop: 20, paddingBottom: 20, background : (
                     device.state.value === "OFF" ? "#1e1a1a" : "#40e0d0"
                   ), boxShadow: device.state.value === "OFF" ? "0px 0px 6px #9E9E9E" : "0px 0px 12px #40e0d0" }}>
@@ -348,6 +361,11 @@ const Devices = () => {
                     </Card>
                     
             ))}
+
+<br/><br/>
+
+</div>
+
 
 <PulseLoader color={'#40e0d0'} loading={loading} css={override} />
       </div>

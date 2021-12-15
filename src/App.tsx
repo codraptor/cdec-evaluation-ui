@@ -6,12 +6,23 @@ import Login from "./components/login/login";
 import { UserContextProvider } from './components/common/user-context';
 import OTPVerification from "./components/otp-verification/otp-verification";
 
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
+import './App.css'
 
 
 const App = () => {
   return (
     <HashRouter>
+      
   <div style={{ textAlign : "center" }}>
+
+    <div style={{color:'white', backgroundColor:'#40e0d0', textAlign:'center',
+     fontFamily:'Cabin', fontSize:20, boxShadow:'solid 1px white'}}>
+    <ToastContainer toastClassName={() => "notification-body"} />
+    </div>
+
     {/* <Header /> */}
     <UserContextProvider>
 

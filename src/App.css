@@ -1,0 +1,13 @@
+.notification-body {
+    background-color: turquoise;
+    color: black;
+    font-family: 'Cabin';
+    font-size: 18px;
+    margin-top: 20px;
+    margin-left: 10px;
+    margin-right: 10px;
+    font-weight: 800;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    box-shadow: 0px 0px 10px #40e0d0;
+}
