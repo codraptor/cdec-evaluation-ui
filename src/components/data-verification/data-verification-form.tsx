@@ -6,7 +6,7 @@ import { useHistory } from 'react-router-dom';
 
 
 interface Values {
-    password: string;
+    option: string;
 };
 
 interface Props {
@@ -18,15 +18,11 @@ export const OTPVerificationForm: React.FC<Props> = ({onSubmit}) => {
     const history = useHistory();
 
     return (
-        <Formik initialValues={{password:''}} onSubmit={(values) => {
+        <Formik initialValues={{option:''}} onSubmit={(values) => {
             onSubmit(values)
         }}>
             {({values}) => (
                     <Form>
-                        <div style={{ marginTop :10 }} >
-                        <Field name="password" label="Password" placeholder="Password" component={MyField}/>
-                        </div>
-                        <br/>
                         <Button style={{ color: "#000", fontWeight: 600, paddingLeft: 40, 
                         fontFamily: 'Cabin',
                         paddingRight: 40,  paddingTop: 10, paddingBottom: 10,

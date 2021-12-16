@@ -4,7 +4,8 @@ import { Formik, Form, Field } from 'formik';
 import { MyField } from './myfield';
 
 interface Values {
-    phone: string;
+    username: string;
+    password: string;
 };
 
 interface Props {
@@ -13,13 +14,16 @@ interface Props {
 
 export const MyForm: React.FC<Props> = ({onSubmit}) => {
     return (
-        <Formik initialValues={{phone:''}} onSubmit={(values) => {
+        <Formik initialValues={{username:'', password:''}} onSubmit={(values) => {
             onSubmit(values)
         }}>
             {({values}) => (
                     <Form>
                         <div style={{ marginTop :10 }} >
-                        <Field name="phone" label="Phone" placeholder="Phone" component={MyField}/>
+                        <Field name="username" label="Username" placeholder="Username" component={MyField}/>
+                        </div>
+                        <div style={{ marginTop :10 }} >
+                        <Field type="password" name="password" label="Password" placeholder="Password" component={MyField}/>
                         </div>
                         <br/>
                         <Button style={{ color: "#000", fontWeight: 600, paddingLeft: 40, 

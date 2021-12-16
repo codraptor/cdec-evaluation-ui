@@ -4,7 +4,7 @@ import Devices from "./components/device-list/device-list.jsx";
 import Header from "./components/header/header";
 import Login from "./components/login/login";
 import { UserContextProvider } from './components/common/user-context';
-import OTPVerification from "./components/otp-verification/otp-verification";
+import DataVerification from "./components/data-verification/data-verification";
 
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -34,8 +34,8 @@ const App = () => {
       <Route path="/devices">
         <Devices />
       </Route>
-      <Route path="/otp-verify">
-        <OTPVerification />
+      <Route path="/data-verification">
+        <DataVerification />
       </Route>
 
     </Switch>

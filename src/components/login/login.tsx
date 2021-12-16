@@ -1,8 +1,6 @@
 import React from 'react';
 import { MyForm } from "./myform";
 import axios from "axios";
-import ReactNotification from 'react-notifications-component';
-import { UserContext } from '../common/user-context';
 import { useHistory } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
@@ -11,7 +9,6 @@ import { serviceUrl }  from "../../constants";
 
 import { CSSProperties } from "@material-ui/styles";
 
-import { store } from 'react-notifications-component';
 import 'react-notifications-component/dist/theme.css';
 
 import { useEffect } from "react";
@@ -21,7 +18,6 @@ import { css } from "@emotion/react";
 import PulseLoader from "react-spinners/PulseLoader";
 
 import './login.css'; 
-import loginPic from './login.png';
 
 const Login = () => {
 
@@ -42,6 +38,7 @@ const Login = () => {
   useEffect(() => {
 
     let jwt = localStorage.getItem("jwt") || "";
+    console.log(jwt)
     if(jwt || jwt != ''){
 
       let axiosConfig = {
@@ -51,10 +48,9 @@ const Login = () => {
       };
 
       axios.get(serviceUrl + "/validateToken",axiosConfig).then((value)=> {
-        if(value.data === "SUCCESS"){
-          
-          history.push('/devices');
-
+        console.log(value)
+        if(value.data === "SUCCESS"){   
+          history.push('/data-verification');
         } else {
           localStorage.removeItem("jwt");
         }
@@ -65,12 +61,10 @@ const Login = () => {
 
   }, []);
 
-  let {  mobile , updateMobile } = React.useContext(UserContext);
-
     let formCenterCSS : CSSProperties = {
       position: "fixed",
       top: "50%",
-      marginTop: -100,
+      marginTop: -200,
       marginLeft: -200,
       left: "50%",
       height: 200,
@@ -80,53 +74,22 @@ const Login = () => {
 
     return (
     <div >
-
-            {/* <header>
-  <div className="header__bg"></div>
-      <img id="image" src={loginPic} />
-
-      </header> */}
       
-
-      <div className="up_dark_triangle"></div>
-      <div className="up_dark_triangle_2"></div>
-      <div className="up_dark_triangle_3"></div>
-
-      <div className="up_dark_triangle_4"></div>
-      <div className="up_dark_triangle_5"></div>
-      <div className="up_dark_triangle_6"></div>
-
       <div style={formCenterCSS}>
       
       <div style={{ marginLeft:20, marginRight: 20}}>
         <h2 style= {{  color: "#40e0d0", fontFamily: 'Cabin', fontSize: 30}}  id="heading">Sign in</h2>
-        <p style= {{  color: "white"}} id="resources">Sign in to access all your resources</p>
+        <p style= {{  color: "white"}} id="resources">Sign in to the data validation portal</p>
         
-      <MyForm onSubmit={({phone}) => {
-
-        localStorage.setItem("phone", phone);
-
-        updateMobile(phone);
+      <MyForm onSubmit={({username, password}) => {
 
         setLoading(true);
 
-        axios.post(serviceUrl + "/generateOtp",{
-          id:"+91"+phone,
-          verificationType: 'PHONE',
-          action: 'LOGIN'
+        axios.post(serviceUrl + "/login",{
+          username:username,
+          password: password
         }).then((value)=> {
           if(value.data.status === "FAILURE"){
-            // store.addNotification({
-            //   content: MyNotify,
-            //   animationIn: ["animate__animated", "animate__fadeIn"],
-            //   animationOut: ["animate__animated", "animate__fadeOut"],
-            //   type: "default",
-            //   container: "top-center",
-            //   dismiss: {
-            //     duration: 3000,
-            //     onScreen: false
-            //   }
-            // });
             toast.error("Login Failed", {
               position: toast.POSITION.TOP_CENTER,
               closeButton: false,
@@ -135,7 +98,8 @@ const Login = () => {
               autoClose: 3000
             });
           }  else {
-            history.push('/otp-verify');
+              localStorage.setItem("jwt", value.data.jwt);
+              history.push('/data-verification');
           }
           console.log(value);
           setLoading(false);
@@ -149,12 +113,6 @@ const Login = () => {
       </div>
       );
   };
-
-  const MyNotify = () => {
-    return (
-      <div style={{textAlign:'center'}}><p style={MyStyles}>Login failed</p> </div>
-    );
-  }
   
   const MyStyles: CSSProperties = {
     textAlign: 'center',
