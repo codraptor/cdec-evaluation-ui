@@ -49,6 +49,38 @@ const DataVerification = () => {
     background:rgba(0, 0, 0, 0.8);
 `;
 
+  let getEntry = () => {
+
+    let axiosConfig = {
+      headers: {
+         "Authorization": "Bearer " + (localStorage.getItem("jwt") || "")
+      }
+    };
+
+    axios.get(serviceUrl + "/getEntry", axiosConfig)
+        .then((value) => {
+          setLoading(false);
+          console.log("data")
+          console.log(value.data)
+          if(value.data==="" || value.data==null ){
+            setEntry({
+              id: "",
+              node: "",
+              language: "",
+              inlinkTitle: "",
+              context: "",
+              label: "",
+              description: "",
+              wikipediaTitle: "",
+              wikipediaDescription: ""
+            });
+          } else {
+                setEntry(value.data);
+          }
+
+        })
+  }
+
   useEffect(() => {
 
     setLoading(true);
@@ -82,28 +114,7 @@ const DataVerification = () => {
       }
     };
 
-    axios.get(serviceUrl + "/getEntry", axiosConfig)
-        .then((value) => {
-          setLoading(false);
-          console.log("data")
-          console.log(value.data)
-          if(value.data==="" || value.data==null ){
-            setEntry({
-              id: "",
-              node: "",
-              language: "",
-              inlinkTitle: "",
-              context: "",
-              label: "",
-              description: "",
-              wikipediaTitle: "",
-              wikipediaDescription: ""
-            });
-          } else {
-                setEntry(value.data);
-          }
-
-        })
+    getEntry();
 
   }, []);
 
@@ -150,7 +161,8 @@ const DataVerification = () => {
             autoClose: 3000
           });
         } else {
-          window.location.reload();
+          getEntry();
+          //window.location.reload();
           //history.push('/data-verification');
         }
         console.log(value);
