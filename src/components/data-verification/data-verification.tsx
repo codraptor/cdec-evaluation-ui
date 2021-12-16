@@ -118,10 +118,10 @@ const DataVerification = () => {
       position: "fixed",
       top: "20%",
       marginTop: -100,
-      marginLeft: -500,
+      marginLeft: -650,
       left: "50%",
       height: 500,
-      width: 1000,
+      width: 1300,
       textAlign: 'center'
     };
 
@@ -179,14 +179,17 @@ const DataVerification = () => {
         <p style= {{  color: "white", marginTop: 200}} id="otp">Thank you! All entries are validated.</p> 
         }
         { (entry!=null && entry.node!="") && <div> 
-        <p style= {{  color: "white"}} id="otp">Please check if the span marked in the context pertains to the correct Wikipedia page</p> 
+        <p style= {{  color: "white", fontWeight: 600}} id="otp">Please check if the span marked as &lt;a&gt;...&lt;/a&gt; in the context pertains to the mentioned Wikipedia page</p> 
 
-        <div style={{ marginTop:50, color: "white", fontFamily: 'Cabin', fontSize: 20  }}>Node: { entry.node }</div>
-        <div style={{ marginTop:20, color: "white", fontFamily: 'Cabin', fontSize: 20  }}>Language: { entry.language }</div>
-        <div style={{ marginTop:20, color: "white", fontFamily: 'Cabin', fontSize: 20  }}>Wikipedia Title: {entry.wikipediaTitle}</div>
-        <div style={{ marginTop:20, color: "white", fontFamily: 'Cabin', fontSize: 20  }}>Wikipedia Description: {entry.wikipediaDescription}</div>
-        <div style={{ marginTop:20, color: "white", fontFamily: 'Cabin', fontSize: 20  }}>Context: {entry.context}</div>
-        <div style={{ marginTop:20, color: "white", fontFamily: 'Cabin', fontSize: 20  }}>Inlink Title: {entry.inlinkTitle}</div>
+        <div style={{marginTop:15,color:"turquoise", fontFamily: 'Cabin', fontSize: 22 }} >Wikipedia Page: </div>
+        <div style={{ marginTop:5, color: "white", fontFamily: 'Cabin', fontSize: 20  }}>{entry.wikipediaTitle}</div>
+        <div style={{marginTop:15,color:"turquoise", fontFamily: 'Cabin', fontSize: 22 }} >Page Description: </div>
+        <div style={{ marginTop:5, color: "white", fontFamily: 'Cabin', fontSize: 20  }}>{entry.wikipediaDescription}</div>
+        <div style={{marginTop:15,color:"turquoise", fontFamily: 'Cabin', fontSize: 22 }} >Context Page Title: </div>
+        <div style={{ marginTop:5, color: "white", fontFamily: 'Cabin', fontSize: 20  }}>{entry.inlinkTitle}</div>
+        <div style={{marginTop:15,color:"turquoise", fontFamily: 'Cabin', fontSize: 22 }} >Context: </div>
+        <div style={{ marginTop:5, color: "white", fontFamily: 'Cabin', fontSize: 20  }}>{entry.context}</div>
+        
 
         <div>
         <Button style= {{ color: "#000", fontWeight: 600, paddingLeft: 40, 
