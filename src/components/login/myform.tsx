@@ -20,10 +20,10 @@ export const MyForm: React.FC<Props> = ({onSubmit}) => {
             {({values}) => (
                     <Form>
                         <div style={{ marginTop :10 }} >
-                        <Field name="username" label="Username" placeholder="Username" component={MyField}/>
+                        <Field name="username" placeholder="Username" component={MyField}/>
                         </div>
                         <div style={{ marginTop :10 }} >
-                        <Field type="password" name="password" label="Password" placeholder="Password" component={MyField}/>
+                        <Field type="password" name="password" placeholder="Password" component={MyField}/>
                         </div>
                         <br/>
                         <Button style={{ color: "#000", fontWeight: 600, paddingLeft: 40, 
