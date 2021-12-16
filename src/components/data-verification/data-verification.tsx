@@ -32,8 +32,6 @@ const DataVerification = () => {
     language: "",
     inlinkTitle: "",
     context: "",
-    label: "",
-    description: "",
     wikipediaTitle: "",
     wikipediaDescription: ""
   });
@@ -69,8 +67,6 @@ const DataVerification = () => {
               language: "",
               inlinkTitle: "",
               context: "",
-              label: "",
-              description: "",
               wikipediaTitle: "",
               wikipediaDescription: ""
             });
@@ -187,8 +183,6 @@ const DataVerification = () => {
 
         <div style={{ marginTop:50, color: "white", fontFamily: 'Cabin', fontSize: 20  }}>Node: { entry.node }</div>
         <div style={{ marginTop:20, color: "white", fontFamily: 'Cabin', fontSize: 20  }}>Language: { entry.language }</div>
-        <div style={{ marginTop:20, color: "white", fontFamily: 'Cabin', fontSize: 20  }}>Description: {entry.description}</div>
-        <div style={{ marginTop:20, color: "white", fontFamily: 'Cabin', fontSize: 20  }}>Label: {entry.label}</div>
         <div style={{ marginTop:20, color: "white", fontFamily: 'Cabin', fontSize: 20  }}>Wikipedia Title: {entry.wikipediaTitle}</div>
         <div style={{ marginTop:20, color: "white", fontFamily: 'Cabin', fontSize: 20  }}>Wikipedia Description: {entry.wikipediaDescription}</div>
         <div style={{ marginTop:20, color: "white", fontFamily: 'Cabin', fontSize: 20  }}>Context: {entry.context}</div>
