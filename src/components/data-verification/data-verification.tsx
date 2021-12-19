@@ -10,6 +10,8 @@ import { CSSProperties } from "@material-ui/styles";
 import { Button } from '@material-ui/core';
 import 'react-notifications-component/dist/theme.css';
 
+import parse from 'html-react-parser';
+
 import { toast } from 'react-toastify';
 
 import { useMobile } from '../common/user-context';
@@ -118,10 +120,10 @@ const DataVerification = () => {
       position: "fixed",
       top: "15%",
       marginTop: -100,
-      marginLeft: -800,
+      marginLeft: -650,
       left: "50%",
       height: 500,
-      width: 1600,
+      width: 1300,
       textAlign: 'center'
     };
 
@@ -179,17 +181,16 @@ const DataVerification = () => {
         <p style= {{  color: "white", marginTop: 200}} id="otp">Thank you! All entries are validated.</p> 
         }
         { (entry!=null && entry.node!="") && <div> 
-        <p style= {{  color: "white", fontWeight: 600}} id="otp">Please check if the span marked as &lt;a&gt;...&lt;/a&gt; in the context pertains to the mentioned Wikipedia page</p> 
+        <p style= {{  color: "white", fontWeight: 600}} id="otp">Please check if the underlined span in the context pertains to the mentioned Wikipedia page</p> 
 
-        <div style={{marginTop:15,color:"turquoise", fontFamily: 'Cabin', fontSize: 22 }} >Wikipedia Page: </div>
-        <div style={{ marginTop:5, color: "white", fontFamily: 'Cabin', fontSize: 18  }}>{entry.wikipediaTitle}</div>
-        <div style={{marginTop:15,color:"turquoise", fontFamily: 'Cabin', fontSize: 22 }} >Page Description: </div>
-        <div style={{ marginTop:5, color: "white", fontFamily: 'Cabin', fontSize: 18  }}>{entry.wikipediaDescription}</div>
-        <div style={{marginTop:15,color:"turquoise", fontFamily: 'Cabin', fontSize: 22 }} >Context Page Title: </div>
-        <div style={{ marginTop:5, color: "white", fontFamily: 'Cabin', fontSize: 18  }}>{entry.inlinkTitle}</div>
-        <div style={{marginTop:15,color:"turquoise", fontFamily: 'Cabin', fontSize: 22 }} >Context: </div>
-        <div style={{ marginTop:5, color: "white", fontFamily: 'Cabin', fontSize: 18  }}>{entry.context}</div>
-        
+        <div style={{marginTop:15,color:"turquoise", fontFamily: 'Cabin', fontSize: 21 }} >Wikipedia Page: </div>
+        <div style={{ marginTop:5, color: "white", fontFamily: 'Cabin', fontSize: 17  }}>{entry.wikipediaTitle}</div>
+        <div style={{marginTop:15,color:"turquoise", fontFamily: 'Cabin', fontSize: 21 }} >Page Description: </div>
+        <div style={{ marginTop:5, color: "white", fontFamily: 'Cabin', fontSize: 17  }}>{entry.wikipediaDescription}</div>
+        <div style={{marginTop:15,color:"turquoise", fontFamily: 'Cabin', fontSize: 21 }} >Context Page Title: </div>
+        <div style={{ marginTop:5, color: "white", fontFamily: 'Cabin', fontSize: 17  }}>{entry.inlinkTitle}</div>
+        <div style={{marginTop:15,color:"turquoise", fontFamily: 'Cabin', fontSize: 21 }} >Context: </div>
+        <div style={{ marginTop:5, color: "white", fontFamily: 'Cabin', fontSize: 17  }}>{parse(entry.context)}</div>
 
         <div>
         <Button style= {{ color: "#000", fontWeight: 600, paddingLeft: 40, 
@@ -219,7 +220,7 @@ const DataVerification = () => {
         </div>}
 
       <div>
-      <div style= {{  color: "white", marginTop: 80}} id="otp">To logout please</div> 
+      <div style= {{  color: "white", marginTop: 50}} id="otp">To logout please</div> 
       <Button style= {{ color: "#4ff", fontWeight: 600, paddingLeft: 40, 
                         fontFamily: 'Cabin', marginLeft : 10,
                         paddingRight: 40, paddingBottom: 10,
