@@ -181,7 +181,12 @@ const DataVerification = () => {
         <p style= {{  color: "white", marginTop: 200}} id="otp">Thank you! All entries are validated.</p> 
         }
         { (entry!=null && entry.node!="") && <div> 
-        <p style= {{  color: "white", fontWeight: 600}} id="otp">Please check if the underlined span in the context pertains to the mentioned Wikipedia page</p> 
+        <p style= {{  border: "1px solid #40e0d0", color: "white", fontWeight: 600, padding: 10}} id="otp">Please check if the underlined span in the context pertains to the mentioned Wikipedia page.<br/>
+        Click on "Correct" button if the Wikipedia page pertains to underlined span in the context. <br/>
+        Click on "Incorrect" button if the Wikipedia page does not pertain to underlined span in the context. <br/>
+        Click on "Not enough information" button if context is not enough to decide if underlined span pertains to the Wikipedia page but using the internet, you can decide. <br/>
+        Click on "Not sure even with internet" button if neither the context nor internet is enough to decide if the underlined span pertains to the Wikipedia page.</p>
+
 
         <div style={{marginTop:15,color:"turquoise", fontFamily: 'Cabin', fontSize: 21 }} >Wikipedia Page: </div>
         <div style={{ marginTop:5, color: "white", fontFamily: 'Cabin', fontSize: 17  }}>{entry.wikipediaTitle}</div>
@@ -215,7 +220,15 @@ const DataVerification = () => {
                         background : "#fff" , fontSize: 18 , boxShadow: "0px 0px 6px #fff"
                         }}
                         
-                        type="button" onClick={(() => buttonclick("UNSURE"))}>Not Sure</Button>
+                        type="button" onClick={(() => buttonclick("NOT_ENOUGH"))}>Not Enough Information</Button>
+
+        <Button style= {{ color: "#000", fontWeight: 600, paddingLeft: 40, 
+                        fontFamily: 'Cabin', marginLeft : 10, marginTop: 30,
+                        paddingRight: 40,  paddingTop: 10, paddingBottom: 10,
+                        background : "#fff" , fontSize: 18 , boxShadow: "0px 0px 6px #fff"
+                        }}
+                        
+                        type="button" onClick={(() => buttonclick("UNSURE"))}>Not Sure Even with Internet</Button>
           </div>
         </div>}
 
